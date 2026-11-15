@@ -23,141 +23,16 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		String phone = request.getParameter("phone");
-
-		String securityQuestion = request.getParameter("securityQuestion");
-		String securityAnswer = request.getParameter("securityAnswer");
-
-		if (name == null || name.trim().isEmpty()) {
-			request.setAttribute("error", "Name is required.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		name = name.trim();
-
-		if (!name.matches("[A-Za-z ]+")) {
-			request.setAttribute("error", "Name can contain only letters and spaces.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		name = name.replaceAll("\\s+", " ");
-
-		if (name.length() < 2 || name.length() > 50) {
-			request.setAttribute("error", "Name must be between 2 and 50 characters.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		String[] words = name.toLowerCase().split(" ");
-		StringBuilder formattedName = new StringBuilder();
-
-		for (String word : words) {
-
-			if (!word.isEmpty()) {
-
-				formattedName.append(Character.toUpperCase(word.charAt(0)));
-
-				if (word.length() > 1) {
-					formattedName.append(word.substring(1));
-				}
-
-				formattedName.append(" ");
-			}
-		}
-
-		name = formattedName.toString().trim();
-
-		if (email == null || email.trim().isEmpty()) {
-			request.setAttribute("error", "Email is required.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		email = email.trim().toLowerCase();
-
-		String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-
-		if (!email.matches(emailRegex)) {
-			request.setAttribute("error", "Please enter a valid email address.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		if (password == null || password.isEmpty()) {
-			request.setAttribute("error", "Password is required.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		if (!password.equals(password.trim())) {
-			request.setAttribute("error", "Password must not contain leading or trailing spaces.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		if (password.length() < 8) {
-			request.setAttribute("error", "Password must contain at least 8 characters.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		if (password.length() > 128) {
-			request.setAttribute("error", "Password cannot exceed 128 characters.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		if (phone == null || phone.trim().isEmpty()) {
-			request.setAttribute("error", "Phone number is required.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		phone = phone.trim();
-
-		if (!phone.matches("\\d{10}")) {
-			request.setAttribute("error", "Phone number must contain exactly 10 digits.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		if (phone.startsWith("0")) {
-			request.setAttribute("error", "Please enter a valid 10-digit mobile number.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		if (securityQuestion == null || securityQuestion.trim().isEmpty()) {
-			request.setAttribute("error", "Please select a security question.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		securityQuestion = securityQuestion.trim();
-
-		if (securityAnswer == null || securityAnswer.trim().isEmpty()) {
-			request.setAttribute("error", "Security answer is required.");
-			request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
-			return;
-		}
-
-		securityAnswer = securityAnswer.trim();
-
 		UserBean user = new UserBean();
 
-		user.setName(name);
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setPhone(phone);
+		user.setName(request.getParameter("name"));
+		user.setEmail(request.getParameter("email"));
+		user.setPassword(request.getParameter("password"));
+		user.setPhone(request.getParameter("phone"));
 		user.setRole("USER");
 		user.setStatus(true);
-		user.setSecurityQuestion(securityQuestion);
-		user.setSecurityAnswer(securityAnswer);
+		user.setSecurityQuestion(request.getParameter("securityQuestion"));
+		user.setSecurityAnswer(request.getParameter("securityAnswer"));
 
 		boolean registered = userDAO.registerUser(user);
 

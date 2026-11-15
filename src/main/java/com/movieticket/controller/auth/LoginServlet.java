@@ -24,6 +24,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		// Get login details from the form
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
@@ -49,29 +50,20 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 
+		// Check user in database
 		UserBean user = userDAO.loginUser(email, password);
 
 		if (user != null) {
-
+			// Create session
 			HttpSession session = request.getSession();
 
 			session.setAttribute("user", user);
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userName", user.getName());
 			session.setAttribute("userRole", user.getRole());
+			session.removeAttribute("accountInactive");
 
-			if (user.isStatus()) {
-
-				session.removeAttribute("accountInactive");
-
-				response.sendRedirect(request.getContextPath() + "/home");
-
-			} else {
-
-				session.setAttribute("accountInactive", true);
-
-				response.sendRedirect(request.getContextPath() + "/profile");
-			}
+			response.sendRedirect(request.getContextPath() + "/home");
 
 		} else {
 
