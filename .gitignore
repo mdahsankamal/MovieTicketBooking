@@ -1,61 +1,38 @@
-# ==============================
-# Compiled Java Files
-# ==============================
+# Java compiled files
 *.class
 
-# ==============================
-# Log and Crash Files
-# ==============================
-*.log
-hs_err_pid*
-replay_pid*
-
-# ==============================
-# Eclipse IDE and Classpath
-# ==============================
-.metadata/
-.recommenders/
-.classpath
-.project
-.settings/
-*.launch
-
-# ==============================
-# Build Output
-# ==============================
+# Build output
 /bin/
 /build/
 /target/
 /out/
 
-# ==============================
-# Database Credentials
-# ==============================
+# Eclipse workspace
+.metadata/
+
+# Logs and crash files
+*.log
+hs_err_pid*
+replay_pid*
+catalina.out
+
+# Database credentials
 /src/main/java/db.properties
 .env
 .env.*
 !.env.example
 
-# ==============================
-# Temporary Files
-# ==============================
+# Temporary files
 *.tmp
 *.bak
 *.swp
 *~
 
-# ==============================
-# Operating System Files
-# ==============================
+# Operating system files
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# ==============================
-# Tomcat Logs
-# ==============================
-catalina.out
-/.vscode
-
-ROOT.war
+# VS Code
+/.vscode/
 
